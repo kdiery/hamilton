@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "patientcontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -8,7 +9,8 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-
+    PatientController *patientController = new PatientController();
+    engine.rootContext()->setContextProperty("patientController", patientController);
     qmlRegisterSingletonType(QUrl("qrc:/qt/qml/hamilton/Theme.qml"), "Theme",1,0,"Theme");
 
     QObject::connect(

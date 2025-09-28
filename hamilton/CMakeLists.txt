@@ -24,6 +24,7 @@ qt_add_qml_module(apphamilton
         QML_FILES TextIconButton.qml
         QML_FILES
         QML_FILES Theme.qml
+        SOURCES patientcontroller.h patientcontroller.cpp
 )
 
 

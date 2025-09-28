@@ -9,15 +9,16 @@ Window {
     title: qsTr("Hamilton")
     color: Theme.background
 
-    property bool isMale: true
-    property bool animationIsRunning: false
+    readonly property bool isMale: patientController.isMale
+    readonly property string age: patientController.patientAge
+    readonly property bool isHealing: patientController.healingState === PatientController.Healing
 
     Rectangle {
         id: containerId
         anchors.fill: parent
         anchors.margins: 20
         color: Theme.background
-        state: "not_healing"
+        state: isHealing ? "healing" : "not_healing"
 
         // start animation, move and change button, move patienticon
         states: [
@@ -194,7 +195,7 @@ Window {
                 y: 0
             }
 
-            state: "baby"
+            state: patientController.patientAge
 
             states: [
                 State {
@@ -285,11 +286,11 @@ Window {
                 spacing: 10
                 IconButton {
                     iconSource: "qrc:/icons/mars.svg"
-                    onButtonClicked: isMale = true
+                    onButtonClicked: patientController.setIsMale(true)
                 }
                 IconButton {
                     iconSource: "qrc:/icons/venus.svg"
-                    onButtonClicked: isMale = false
+                    onButtonClicked: patientController.setIsMale(false)
                 }
             }
 
@@ -309,25 +310,25 @@ Window {
                 IconButton {
                     iconSource: "qrc:/icons/baby.svg"
                     onButtonClicked: {
-                        currentPatientId.state = "baby"
+                        patientController.setPatientAge("baby")
                     }
                 }
                 IconButton {
                     iconSource: isMale ? "qrc:/icons/child.svg" : "qrc:/icons/child-dress.svg"
                     onButtonClicked: {
-                        currentPatientId.state = "child"
+                        patientController.setPatientAge("child")
                     }
                 }
                 IconButton {
                     iconSource: isMale ? "qrc:/icons/person.svg" : "qrc:/icons/person-dress.svg"
                     onButtonClicked: {
-                        currentPatientId.state = "adult"
+                        patientController.setPatientAge("adult")
                     }
                 }
                 IconButton {
                     iconSource: "qrc:/icons/person-cane.svg"
                     onButtonClicked: {
-                        currentPatientId.state = "elder"
+                        patientController.setPatientAge("elder")
                     }
                 }
                 bottomPadding: 10
@@ -337,10 +338,10 @@ Window {
                 iconSource: "qrc:/icons/play.svg"
                 buttonText: "Start Healing"
                 onButtonClicked: {
-                    if (containerId.state === "healing") {
-                        containerId.state = "not_healing"
+                    if (isHealing) {
+                        patientController.stopHealing()
                     } else {
-                        containerId.state = "healing"
+                        patientController.startHealing()
                     }
                 }
             }
