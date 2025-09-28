@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 
     PatientController *patientController = new PatientController();
     engine.rootContext()->setContextProperty("patientController", patientController);
+
     qmlRegisterSingletonType(QUrl("qrc:/qt/qml/hamilton/Theme.qml"), "Theme",1,0,"Theme");
 
     QObject::connect(
